@@ -19,6 +19,8 @@ connectDb()
     console.error(`Failed to connect to database: ${err.message}`);
   });
 
+app.use(express.json());
+
 app.use("/books", booksRouter);
 app.use("/", rootRouter);
 app.use(errorRouter);

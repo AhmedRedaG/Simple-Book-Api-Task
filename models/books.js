@@ -12,33 +12,10 @@ connectDb()
   });
 
 class Book {
-  constructor(
-    title,
-    author,
-    isbn,
-    publisher,
-    publicationYea,
-    genre,
-    available
-  ) {
-    this.title = title;
-    this.author = author;
-    this.isbn = isbn;
-    this.publisher = publisher;
-    this.publicationYear = publicationYea;
-    this.genre = genre;
-    this.available = available;
-  }
-
   static createBook(book) {
     return db.collection("books").insertOne(book);
   }
-
   static getAllBooks() {
-    // const books = db.collection("books").find().toArray();
-    // console.log(books);
-    // console.log(db);
-    // console.log(db.collection("books"));
     return db.collection("books").find().toArray();
   }
   static getBookById(id) {
@@ -48,12 +25,22 @@ class Book {
       return Promise.reject(new Error("Invalid book id"));
     }
   }
-  // static deleteBook(isbn) {
-  //   return db.collections("books").deleteOne({ isbn: isbn });
-  // }
-  // static updateBook(isbn, book) {
-  //   return db.collections("books").updateOne({ isbn: isbn }, { $set: book });
-  // }
+  static deleteBook(id) {
+    if (ObjectId.isValid(id)) {
+      return db.collection("books").deleteOne({ _id: new ObjectId(id) });
+    } else {
+      return Promise.reject(new Error("Invalid book id"));
+    }
+  }
+  static updateBook(id, book) {
+    if (ObjectId.isValid(id)) {
+      return db
+        .collection("books")
+        .updateOne({ _id: new ObjectId(id) }, { $set: book });
+    } else {
+      return Promise.reject(new Error("Invalid book id"));
+    }
+  }
 }
 
 export default Book;
