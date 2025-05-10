@@ -1,22 +1,19 @@
 import { ObjectId } from "mongodb";
 
-import { getDb, connectDb } from "../database/db.js";
-let db;
-
-connectDb()
-  .then(() => {
-    db = getDb();
-  })
-  .catch((err) => {
-    console.error(`Failed to connect to database: ${err.message}`);
-  });
+import { db } from "../app.js";
 
 class Book {
   static createBook(book) {
     return db.collection("books").insertOne(book);
   }
-  static getAllBooks() {
-    return db.collection("books").find().toArray();
+  static getAllBooks(page, limit) {
+    return db
+      .collection("books")
+      .find()
+      .sort({ title: 1 })
+      .skip(page * limit)
+      .limit(limit)
+      .toArray();
   }
   static getBookById(id) {
     if (ObjectId.isValid(id)) {

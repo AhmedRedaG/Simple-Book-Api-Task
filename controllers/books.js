@@ -1,7 +1,9 @@
 import Book from "../models/books.js";
 
 export const getBooks = (req, res) => {
-  Book.getAllBooks()
+  const page = Number(req.query.page) || 0;
+  const limit = Number(req.query.limit) || 10;
+  Book.getAllBooks(page, limit)
     .then((data) => {
       res.json(data);
     })
