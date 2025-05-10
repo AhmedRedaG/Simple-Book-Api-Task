@@ -46,7 +46,8 @@ export const postCreateBook = (req, res) => {
 
 export const patchUpdateBook = (req, res) => {
   const id = req.params.id;
-  Book.updateBook(id, req.body)
+  const updates = req.body;
+  Book.updateBook(id, updates)
     .then((data) => {
       if (data) {
         res.json(data);

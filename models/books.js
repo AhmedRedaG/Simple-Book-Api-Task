@@ -32,11 +32,11 @@ class Book {
       return Promise.reject(new Error("Invalid book id"));
     }
   }
-  static updateBook(id, book) {
+  static updateBook(id, updates) {
     if (ObjectId.isValid(id)) {
       return db
         .collection("books")
-        .updateOne({ _id: new ObjectId(id) }, { $set: book });
+        .updateOne({ _id: new ObjectId(id) }, { $set: updates });
     } else {
       return Promise.reject(new Error("Invalid book id"));
     }
